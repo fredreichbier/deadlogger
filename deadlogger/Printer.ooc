@@ -1,3 +1,4 @@
+import os/Terminal
 import deadlogger/[Logger, Level]
 
 Printer: abstract class {
@@ -28,20 +29,20 @@ PrintPrinter: class extends Printer {
 
 ColorPrintPrinter: class extends Printer {
     print: func (level: Int, emitter: Logger, msg: String) -> Bool {
-        color: String = match level {
-            case Level debug => "36"
-            case Level info => "32"
-            case Level warn => "33"
-            case Level error => "35"
-            case Level critical => "31"
-            case => null
+        color: Int = match level {
+            case Level debug => 36
+            case Level info => 32
+            case Level warn => 33
+            case Level error => 35
+            case Level critical => 31
+            case => 0
         }
         if(color) {
-            "\033[0;%sm" format(color) print()
+            Terminal setFgColor(color)
         }
         "[%s] [%s] %s" format(Level format(level), emitter path, msg) print()
         if(color) {
-            "\033[0m" print()
+            Terminal reset()
         }
         printf("\n")
         return true
