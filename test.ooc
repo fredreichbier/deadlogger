@@ -1,8 +1,12 @@
 import deadlogger/[Log, Printer, Level]
 
 main: func {
-    Log root attachPrinter(FilterPrinter new(1..2, PrintPrinter new()))
+    Log root attachPrinter(ColorPrintPrinter new())
     logger := Log getLogger("main")
-    logger debug("KALAMAZOO")
-    logger info("Serious information!")
+    logger debug("debug")
+    logger info("info")
+    logger warn("warn")
+    logger error("error")
+    logger critical("critical")
+    logger log(1234, "nothing!")
 }
