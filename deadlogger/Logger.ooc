@@ -1,7 +1,7 @@
 import structs/[ArrayList,HashMap]
 import text/StringTokenizer
 
-import deadlogger/[Level, Printer]
+import deadlogger/[Level, Printer, Filter, Formatter]
 
 NoSuchLoggerError: class extends Exception {
     init: func ~withMsg (.msg) {
@@ -13,11 +13,15 @@ Logger: class {
     path: String
     subloggers: HashMap<Logger>
     printers: ArrayList<Printer>
+    filter: Filter
     parent: Logger
+    formatter: Formatter
 
     init: func (=path, =parent) {
         subloggers = HashMap<Logger> new()
         printers = ArrayList<Printer> new()
+        formatter = null
+        filter = null
     }
 
     init: func ~withoutParent (.path) {
@@ -52,13 +56,22 @@ Logger: class {
     }
 
     log: func (level: Int, emitter: Logger, msg: String) {
-        accepted := false
-        for(printer: Printer in printers) {
-            if(printer print(level, emitter, msg)) {
-                accepted = true
-            }
+        accepted := true
+        if(filter) {
+            accepted = filter isAccepted(this, level, emitter, msg)
         }
-        if(!accepted) {
+        if(printers isEmpty()) {
+            accepted = false
+        }
+        if(accepted) {
+            formatted := msg
+            if(formatter) {
+                formatted = formatter format(this, level, emitter, msg)
+            }
+            for(printer: Printer in printers) {
+                printer print(this, level, emitter, msg, formatted)
+            }
+        } else {
             if(parent) {
                 parent log(level, emitter, msg)
             } else {
@@ -90,4 +103,9 @@ Logger: class {
     critical: func (msg: String) {
         log(Level critical, msg)
     }
+
+    setFormatter: func (=formatter) {}
+    getFormatter: func -> Formatter { formatter }
+    setFilter: func (=filter) {}
+    getFilter: func -> Filter { filter }
 }

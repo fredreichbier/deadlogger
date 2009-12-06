@@ -1,8 +1,9 @@
-import deadlogger/[Log, Printer, Level]
+import deadlogger/[Log, Printer, Level, Formatter]
 
 main: func {
     Log root attachPrinter(ColorPrintPrinter new())
     logger := Log getLogger("main")
+    Log root setFormatter(NiceFormatter new())
     logger debug("debug")
     logger info("info")
     logger warn("warn")
