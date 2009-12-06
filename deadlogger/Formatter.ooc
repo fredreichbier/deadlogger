@@ -1,4 +1,5 @@
-import text/StringBuffer
+import text/[StringBuffer, StringTemplate]
+import structs/HashMap
 import deadlogger/[Logger, Level, Handler]
 
 Formatter: abstract class {
@@ -6,8 +7,18 @@ Formatter: abstract class {
 }
 
 NiceFormatter: class extends Formatter {
+    template: String
+
+    init: func ~withTemplate (=template) {}
+
+    init: func {
+        template = "[{{level}}] [{{emitter}}] {{msg}}"
+    }
+
     format: func (handler: Handler, logger: Logger, level: Int, emitter: Logger, msg: String) -> String {
-        return "[%s] [%s] %s" format(Level format(level), emitter path, msg)
+        map := HashMap<String> new()
+        map put("level", Level format(level)) .put("msg", msg) .put("emitter", emitter path)
+        return template formatTemplate(map)
     }
 }
 

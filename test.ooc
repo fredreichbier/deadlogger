@@ -7,7 +7,7 @@ main: func {
     Log root attachHandler(console)
     /* file handler */
     file := FileHandler new("test.log")
-    file setFormatter(NiceFormatter new())
+    file setFormatter(NiceFormatter new("{{level}}: {{msg}}"))
     Log root attachHandler(file)
     /* test */
     logger := Log getLogger("main")
