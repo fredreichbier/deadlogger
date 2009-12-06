@@ -47,8 +47,19 @@ ExtendedHandler: abstract class extends Handler {
     }
 }
 
-PrintHandler: class extends ExtendedHandler {
+StreamHandler: class extends ExtendedHandler {
+    stream: FStream
+
+    init: func (=stream) {}
+
     send: func (logger: Logger, level: Int, emitter: Logger, msg, formatted: String) {
-        formatted println()
+        stream write(formatted)
+        stream write('\n')
+    }
+}
+
+PrintHandler: class extends StreamHandler {
+    init: func ~withStdout {
+        stream = stdout
     }
 }

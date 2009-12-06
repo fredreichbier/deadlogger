@@ -1,7 +1,7 @@
 import deadlogger/[Log, Handler, Level, Formatter, Filter]
 
 main: func {
-    handler := PrintHandler new()
+    handler := StreamHandler new(stdout)
     handler setFormatter(ColoredFormatter new(NiceFormatter new()))
     Log root attachHandler(handler)
     logger := Log getLogger("main")
