@@ -1,9 +1,15 @@
 import deadlogger/[Log, Handler, Level, Formatter, Filter]
 
 main: func {
-    handler := StreamHandler new(stdout)
-    handler setFormatter(ColoredFormatter new(NiceFormatter new()))
-    Log root attachHandler(handler)
+    /* console handler */
+    console := StdoutHandler new()
+    console setFormatter(ColoredFormatter new(NiceFormatter new()))
+    Log root attachHandler(console)
+    /* file handler */
+    file := FileHandler new("test.log")
+    file setFormatter(NiceFormatter new())
+    Log root attachHandler(file)
+    /* test */
     logger := Log getLogger("main")
     logger debug("debug")
     logger info("info")

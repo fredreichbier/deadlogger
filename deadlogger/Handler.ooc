@@ -58,8 +58,24 @@ StreamHandler: class extends ExtendedHandler {
     }
 }
 
-PrintHandler: class extends StreamHandler {
+StdoutHandler: class extends StreamHandler {
     init: func ~withStdout {
         stream = stdout
+    }
+}
+
+StderrHandler: class extends StreamHandler {
+    init: func ~withStderr {
+        stream = stderr
+    }
+}
+
+FileHandler: class extends StreamHandler {
+    init: func ~withFilename (filename: String) {
+        stream = FStream open(filename, "a")
+    }
+
+    destroy: func {
+        stream close()
     }
 }
