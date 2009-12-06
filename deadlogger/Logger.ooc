@@ -1,7 +1,7 @@
 import structs/[ArrayList,HashMap]
 import text/StringTokenizer
 
-import deadlogger/[Level, Printer, Filter, Formatter]
+import deadlogger/[Level, Handler]
 
 NoSuchLoggerError: class extends Exception {
     init: func ~withMsg (.msg) {
@@ -12,16 +12,12 @@ NoSuchLoggerError: class extends Exception {
 Logger: class {
     path: String
     subloggers: HashMap<Logger>
-    printers: ArrayList<Printer>
-    filter: Filter
+    handlers: ArrayList<Handler>
     parent: Logger
-    formatter: Formatter
 
     init: func (=path, =parent) {
         subloggers = HashMap<Logger> new()
-        printers = ArrayList<Printer> new()
-        formatter = null
-        filter = null
+        handlers = ArrayList<Handler> new()
     }
 
     init: func ~withoutParent (.path) {
@@ -47,8 +43,8 @@ Logger: class {
         }
     }
 
-    attachPrinter: func (printer: Printer) {
-        printers add(printer)
+    attachHandler: func (handler: Handler) {
+        handlers add(handler)
     }
 
     getSubLogger: func ~alwaysCreate (path: String) -> Logger {
@@ -56,22 +52,13 @@ Logger: class {
     }
 
     log: func (level: Int, emitter: Logger, msg: String) {
-        accepted := true
-        if(filter) {
-            accepted = filter isAccepted(this, level, emitter, msg)
-        }
-        if(printers isEmpty()) {
-            accepted = false
-        }
-        if(accepted) {
-            formatted := msg
-            if(formatter) {
-                formatted = formatter format(this, level, emitter, msg)
+        accepted := false
+        for(handler: Handler in handlers) {
+            if(handler handle(this, level, emitter, msg)) {
+                accepted = true
             }
-            for(printer: Printer in printers) {
-                printer print(this, level, emitter, msg, formatted)
-            }
-        } else {
+        }
+        if(!accepted) {
             if(parent) {
                 parent log(level, emitter, msg)
             } else {
@@ -103,9 +90,4 @@ Logger: class {
     critical: func (msg: String) {
         log(Level critical, msg)
     }
-
-    setFormatter: func (=formatter) {}
-    getFormatter: func -> Formatter { formatter }
-    setFilter: func (=filter) {}
-    getFilter: func -> Filter { filter }
 }

@@ -1,7 +1,7 @@
-import deadlogger/Logger
+import deadlogger/[Logger, Handler]
 
 Filter: abstract class {
-    isAccepted: abstract func (logger: Logger, level: Int, emitter: Logger, msg: String) -> Bool
+    isAccepted: abstract func (handler: Handler, logger: Logger, level: Int, emitter: Logger, msg: String) -> Bool
 }
 
 LevelFilter: class extends Filter {
@@ -9,7 +9,7 @@ LevelFilter: class extends Filter {
     
     init: func (=range) {}
 
-    isAccepted: func (logger: Logger, level: Int, emitter: Logger, msg: String) -> Bool {
+    isAccepted: func (handler: Handler, logger: Logger, level: Int, emitter: Logger, msg: String) -> Bool {
         return level >= range min && level < range max
     }
 }
