@@ -1,4 +1,3 @@
-import os/Terminal
 import deadlogger/[Formatter, Filter, Logger, Level]
 
 Handler: abstract class {
@@ -51,26 +50,5 @@ ExtendedHandler: abstract class extends Handler {
 PrintHandler: class extends ExtendedHandler {
     send: func (logger: Logger, level: Int, emitter: Logger, msg, formatted: String) {
         formatted println()
-    }
-}
-
-ColorPrintHandler: class extends ExtendedHandler {
-    send: func (logger: Logger, level: Int, emitter: Logger, msg, formatted: String) {
-        color: Int = match level {
-            case Level debug => 36
-            case Level info => 32
-            case Level warn => 33
-            case Level error => 35
-            case Level critical => 31
-            case => 0
-        }
-        if(color) {
-            Terminal setFgColor(color)
-        }
-        formatted print()
-        if(color) {
-            Terminal reset()
-        }
-        printf("\n")
     }
 }

@@ -1,8 +1,8 @@
 import deadlogger/[Log, Handler, Level, Formatter, Filter]
 
 main: func {
-    handler := ColorPrintHandler new()
-    handler setFormatter(NiceFormatter new())
+    handler := PrintHandler new()
+    handler setFormatter(ColoredFormatter new(NiceFormatter new()))
     Log root attachHandler(handler)
     logger := Log getLogger("main")
     logger debug("debug")
