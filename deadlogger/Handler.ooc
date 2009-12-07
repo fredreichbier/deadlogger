@@ -55,6 +55,7 @@ StreamHandler: class extends ExtendedHandler {
     send: func (logger: Logger, level: Int, emitter: Logger, msg, formatted: String) {
         stream write(formatted)
         stream write('\n')
+        stream flush()
     }
 }
 
