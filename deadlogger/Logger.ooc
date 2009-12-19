@@ -29,7 +29,7 @@ Logger: class {
             idx := path indexOf('.')
             first := path substring(0, idx)
             rest := path substring(idx + 1, path length())
-            return getSubLogger(first, false) getSubLogger(rest)
+            return getSubLogger(first) getSubLogger(rest)
         } else {
             if(!subloggers contains(path)) {
                 if(!create) {
