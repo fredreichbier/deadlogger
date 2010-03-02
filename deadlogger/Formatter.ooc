@@ -1,4 +1,4 @@
-import text/[StringBuffer, StringTemplate]
+import text/[Buffer, StringTemplate]
 import structs/HashMap
 import deadlogger/[Logger, Level, Handler]
 
@@ -35,7 +35,7 @@ ColoredFormatter: class extends Formatter {
             case Level critical => 31
             case => 0
         }
-        buffer := StringBuffer new()
+        buffer := Buffer new()
         if(color) {
             buffer append("\033[%dm" format(color)) /* I'd REALLY like to use os/Terminal here, but it can only print */
         }
