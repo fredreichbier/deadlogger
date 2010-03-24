@@ -16,7 +16,7 @@ NiceFormatter: class extends Formatter {
     }
 
     format: func (handler: Handler, logger: Logger, level: Int, emitter: Logger, msg: String) -> String {
-        map := HashMap<String> new()
+        map := HashMap<String, String> new()
         map put("level", Level format(level)) .put("msg", msg) .put("emitter", emitter path)
         return template formatTemplate(map)
     }

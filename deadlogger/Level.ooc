@@ -7,11 +7,11 @@ Level: class {
 
     format: static func (level: Int) -> String {
         return match level {
-            case debug => "DEBUG"
-            case info => "INFO"
-            case warn => "WARN"
-            case error => "ERROR"
-            case critical => "CRITICAL"
+            case This debug => "DEBUG"
+            case This info => "INFO"
+            case This warn => "WARN"
+            case This error => "ERROR"
+            case This critical => "CRITICAL"
             case => level toString()
         }
     }

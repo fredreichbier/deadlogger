@@ -5,9 +5,9 @@ Log: class {
 
     getLogger: static func (path: String) -> Logger {
         if(path == "") {
-            return root
+            return This root
         } else {
-            return root getSubLogger(path)
+            return This root getSubLogger(path)
         }
     }
 }

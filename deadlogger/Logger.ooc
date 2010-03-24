@@ -11,12 +11,12 @@ NoSuchLoggerError: class extends Exception {
 
 Logger: class {
     path: String
-    subloggers: HashMap<Logger>
+    subloggers: HashMap<String, Logger>
     handlers: ArrayList<Handler>
     parent: Logger
 
     init: func (=path, =parent) {
-        subloggers = HashMap<Logger> new()
+        subloggers = HashMap<String, Logger> new()
         handlers = ArrayList<Handler> new()
     }
 
