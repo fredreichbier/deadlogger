@@ -12,15 +12,15 @@ ExtendedHandler: abstract class extends Handler {
     init: func ~withAll (=formatter, =filter, =level) {}
     
     init: func ~withFormatterAndLevel (.formatter, .level) {
-        this(formatter, null, level)
+        init(formatter, null, level)
     }
     
     init: func ~withFormatter (.formatter) { 
-        this(formatter, null, 0)
+        init(formatter, null, 0)
     }
     
     init: func ~withNothing {
-        this(null, null, 0)
+        init(null, null, 0)
     }
     
     setFormatter: func (=formatter) {}
@@ -50,7 +50,7 @@ ExtendedHandler: abstract class extends Handler {
 StreamHandler: class extends ExtendedHandler {
     stream: FStream
 
-    init: func (=stream) {}
+    init: func ~stream (=stream) {}
 
     send: func (logger: Logger, level: Int, emitter: Logger, msg, formatted: String) {
         stream write(formatted)

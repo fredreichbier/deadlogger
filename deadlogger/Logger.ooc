@@ -15,13 +15,13 @@ Logger: class {
     handlers: ArrayList<Handler>
     parent: Logger
 
-    init: func (=path, =parent) {
+    init: func ~withParent (=path, =parent) {
         subloggers = HashMap<String, Logger> new()
         handlers = ArrayList<Handler> new()
     }
 
     init: func ~withoutParent (.path) {
-        this(path, null)
+        init(path, null)
     }
 
     getSubLogger: func (path: String, create: Bool) -> Logger {
