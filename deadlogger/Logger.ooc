@@ -25,13 +25,13 @@ Logger: class {
     }
 
     getSubLogger: func (path: String, create: Bool) -> Logger {
-        if(path contains('.')) {
+        if(path contains?('.')) {
             idx := path indexOf('.')
             first := path substring(0, idx)
             rest := path substring(idx + 1, path length())
             return getSubLogger(first) getSubLogger(rest)
         } else {
-            if(!subloggers contains(path)) {
+            if(!subloggers contains?(path)) {
                 if(!create) {
                     NoSuchLoggerError new(This, "No such logger: '%s'" format(path)) throw()
                 } else {
