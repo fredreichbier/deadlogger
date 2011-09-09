@@ -1,4 +1,4 @@
-import text/[Buffer, StringTemplate]
+import text/[StringTemplate]
 import structs/HashMap
 import deadlogger/[Logger, Level, Handler]
 
@@ -37,11 +37,11 @@ ColoredFormatter: class extends Formatter {
         }
         buffer := Buffer new()
         if(color) {
-            buffer append("\033[%dm" format(color)) /* I'd REALLY like to use os/Terminal here, but it can only print */
+            buffer append("\x1b[%dm" format(color)) /* I'd REALLY like to use os/Terminal here, but it can only print */
         }
         buffer append(inner format(handler, logger, level, emitter, msg))
         if(color) {
-            buffer append("\033[0m")
+            buffer append("\x1b[0m")
         }
         return buffer toString()
     }

@@ -4,8 +4,8 @@ import text/StringTokenizer
 import deadlogger/[Level, Handler]
 
 NoSuchLoggerError: class extends Exception {
-    init: func ~withMsg (.msg) {
-        super(msg)
+    init: func ~withMsg (.message) {
+        super(message)
     }
 }
 
